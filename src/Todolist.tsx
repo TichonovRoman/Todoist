@@ -1,15 +1,21 @@
 import React from 'react';
 import TodoListHeader from "./TodoListHeader";
 import Button from "./Button";
-import {TaskType} from "./App";
+import {FilterValuesType, TaskType} from "./App";
 import Task from "./Task";
 
 type TodolistPropsType = {
     title: string
     tasks: Array<TaskType>
+    removeTask: (taskId: number) => void
+    changeFilter: (filter: FilterValuesType) => void
 }
 
 const Todolist = (props: TodolistPropsType) => {
+
+    let tasksComponents = props.tasks.map(t => <Task key={t.id} {...t} removeTask = {props.removeTask}/>)
+
+
     return (
         <div>
             <div>
@@ -20,21 +26,12 @@ const Todolist = (props: TodolistPropsType) => {
                     <button>+</button>
                 </div>
                 <ul>
-                    <Task key={props.tasks[0].id} {...props.tasks[0]}/>
-                    {/*//деструктуризация и в итоге этот
-                    компонет разюивается на отдельны*/}
-                    {/*элементы, которые ждет type*/}
-                    <Task key={props.tasks[1].id} {...props.tasks[1]}/>
-                    <Task key={props.tasks[2].id} {...props.tasks[2]}/>
-
+                    {tasksComponents}
                 </ul>
                 <div>
-                    <Button title={"All"}/>
-                    <Button title={"Active"}/>
-                    <Button title={"Completed"}/>
-                    {/*<button>All</button>*/}
-                    {/*<button>Active</button>*/}
-                    {/*<button>Completed</button>*/}
+                    <Button title={"All"} changeFilter={() => {props.changeFilter("all")}}/>
+                    <Button title={"Active"} changeFilter={() => {props.changeFilter("active")}}/>
+                    <Button title={"Completed"} changeFilter={() => {props.changeFilter("completed")}}/>
                 </div>
             </div>
         </div>
