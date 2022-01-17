@@ -2,10 +2,10 @@ import React from 'react';
 
 
 type TaskPropsType = {
-    id: number
+    id: string
     isDone: boolean
     title: string
-    removeTask: (taskId: number) => void
+    removeTask: (taskId: string) => void
 }
 
 
