@@ -1,67 +1,103 @@
-import React, {ChangeEvent, useState} from 'react';
-import TodoListHeader from "./TodoListHeader";
-import Button from "./Button";
-import {FilterValuesType, TaskType} from "./App";
-import Task from "./Task";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {FilterValuesType} from './App';
 
-type TodolistPropsType = {
+type TaskType = {
+    id: string
     title: string
-    tasks: Array<TaskType>
-    removeTask: (taskId: string) => void
-    changeFilter: (filter: FilterValuesType) => void
-    addTask: (title: string) => void
+    isDone: boolean
 }
 
-const Todolist = (props: TodolistPropsType) => {
+type PropsType = {
+    title: string
+    tasks: Array<TaskType>
+    removeTask: (todoListID: string, taskId: string) => void
+    changeFilter: (todoListID: string, value: FilterValuesType) => void
+    addTask: (todoListID: string, title: string) => void
+    changeTaskStatus: (todoListID: string, taskId: string, isDone: boolean) => void
+    filter: FilterValuesType
+    todoListID: string
+    removeTodo: (todoListID: string) => void
+}
 
-    const [title, setTitle] = useState<string>('')
+export function Todolist(props: PropsType) {
 
-    let tasksComponents = props.tasks.map(t => <Task key={t.id} {...t} removeTask={props.removeTask}/>)
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-    const onClickAddTask = () => {
-        props.addTask(title)
-        setTitle('')
+    const addTask = () => {
+        if (title.trim() !== "") {
+            props.addTask(props.todoListID, title.trim());
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
     }
 
-    const onKeyPressAddTask = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        e.key === "Enter" && onClickAddTask()
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
     }
 
-    const setAllFilter = () => props.changeFilter("all")
-    const setActiveFilter = () => props.changeFilter("active")
-    const setCompletedFilter = () => props.changeFilter("completed")
-    const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addTask();
+        }
+    }
+
+    const onAllClickHandler = () => props.changeFilter(props.todoListID, "all");
+    const onActiveClickHandler = () => props.changeFilter(props.todoListID, "active");
+    const onCompletedClickHandler = () => props.changeFilter(props.todoListID, "completed");
 
 
-    return (
+    let onClickHandlerForDeleteTodo = () => {
+        props.removeTodo(props.todoListID)
+    }
+
+    return <div>
+
+        <h3>
+            {props.title}
+            <button onClick={onClickHandlerForDeleteTodo}>X</button>
+        </h3>
+
+
         <div>
-            <div>
-                <TodoListHeader title={props.title}/>
-                <div>
-                    <input
-                        value={title}
-                        onChange={onChangeSetTitle}
-                        onKeyPress={onKeyPressAddTask}
-                    />
-                    <button onClick={onClickAddTask}>+</button>
-                </div>
-                <ul>
-                    {tasksComponents}
-                </ul>
-                <div>
-                    <Button title={"All"} changeFilter={setAllFilter}/>
-                    <Button title={"Active"} changeFilter={setActiveFilter}/>
-                    <Button title={"Completed"} changeFilter={setCompletedFilter}/>
-                </div>
-            </div>
+            <input value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   className={error ? "error" : ""}
+            />
+            <button onClick={addTask}>+</button>
+            {error && <div className="error-message">{error}</div>}
         </div>
-    );
-};
+        <ul>
+            {
+                props.tasks.map(t => {
+                    const onClickHandler = () => props.removeTask(props.todoListID, t.id)
+                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                        props.changeTaskStatus(props.todoListID, t.id, e.currentTarget.checked);
+                    }
 
-export default Todolist;
-
-// 1. Функция принимает массив чисел и возвращает максимальное значение
-// 2. Функция принимает массив чисел и возвращает массив с двумя максимальными значениями
-// 2. Функция принимает массив чисел и количество максимумов, которые надо найти и возвращает массив
-// с максимальными значениями
-// Выполнить до понедельника до туду листа. Без использования втроенным методов (Матхмакс и sort и пр.)ю Валидировать результат
+                    return <li key={t.id} className={t.isDone ? "is-done" : ""}>
+                        <input type="checkbox"
+                               onChange={onChangeHandler}
+                               checked={t.isDone}/>
+                        <span>{t.title}</span>
+                        <button onClick={onClickHandler}>x</button>
+                    </li>
+                })
+            }
+        </ul>
+        <div>
+            <button className={props.filter === 'all' ? "active-filter" : ""}
+                    onClick={onAllClickHandler}>All
+            </button>
+            <button className={props.filter === 'active' ? "active-filter" : ""}
+                    onClick={onActiveClickHandler}>Active
+            </button>
+            <button className={props.filter === 'completed' ? "active-filter" : ""}
+                    onClick={onCompletedClickHandler}>Completed
+            </button>
+        </div>
+    </div>
+}
