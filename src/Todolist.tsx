@@ -53,6 +53,11 @@ export function Todolist(props: PropsType) {
         props.removeTodo(props.todoListID)
     }
 
+    const onClickHandlerTaskRemove = (taskID: string) => {
+        props.removeTask(props.todoListID, taskID)
+    }
+
+
     return <div>
 
         <h3>
@@ -73,7 +78,7 @@ export function Todolist(props: PropsType) {
         <ul>
             {
                 props.tasks.map(t => {
-                    const onClickHandler = () => props.removeTask(props.todoListID, t.id)
+                    // const onClickHandler = () => props.removeTask(props.todoListID, t.id)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeTaskStatus(props.todoListID, t.id, e.currentTarget.checked);
                     }
@@ -83,7 +88,7 @@ export function Todolist(props: PropsType) {
                                onChange={onChangeHandler}
                                checked={t.isDone}/>
                         <span>{t.title}</span>
-                        <button onClick={onClickHandler}>x</button>
+                        <button onClick={() => onClickHandlerTaskRemove(t.id)}>x</button>
                     </li>
                 })
             }
