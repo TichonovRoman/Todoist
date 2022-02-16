@@ -5,6 +5,7 @@ import {v1} from 'uuid';
 import {AddItemForm} from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
+import {ButtonAppBar} from "./components/ButtonAppBar";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -88,19 +89,7 @@ function App() {
 
 
         <div className="App">
-            <AppBar position="static">
-                <Toolbar style={{justifyContent: "space-between"}}>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        Todolists
-                    </Typography>
-                    <Button color="inherit" variant="outlined">Login</Button>
-
-                </Toolbar>
-
-            </AppBar>
+            <ButtonAppBar/>
             <Container fixed={true}>
                 <Grid container justifyContent="center" style={{padding: "15px"}} >
                     <AddItemForm callback={addTodolist}/>

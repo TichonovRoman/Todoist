@@ -50,7 +50,7 @@ export function Todolist(props: PropsType) {
         props.updateTodolistTitle(props.todoListID, title)
     }
 
-    return <div style = {{
+    return <div style={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -61,9 +61,8 @@ export function Todolist(props: PropsType) {
         <Typography
             variant={"h5"}
             align={"center"}
-            style={{fontWeight: "bold"}}
+            style={{fontWeight: "bold"}}>
 
-        >
             <EditableSpan title={props.title} callback={updateTodolistTitleHandler}/>
             <IconButton>
                 <DeleteForeverOutlinedIcon fontSize={"medium"} onClick={onClickHandlerForDeleteTodo}/>
@@ -92,13 +91,14 @@ export function Todolist(props: PropsType) {
 
                         <div>
                             <Checkbox
-                                color = "primary"
-                                size = "small"
-                                   onChange={onChangeHandler}
-                                   checked={t.isDone}
-                                   style = {{marginRight: "15px"}}
+                                color="primary"
+                                size="small"
+                                onChange={onChangeHandler}
+                                checked={t.isDone}
+                                style={{marginRight: "15px"}}
                             />
-                            <EditableSpan  title={t.title} callback={(title) => callbackHandlerForUpdateTask(title, t.id)}/>
+                            <EditableSpan title={t.title}
+                                          callback={(title) => callbackHandlerForUpdateTask(title, t.id)}/>
 
                         </div>
 
@@ -114,17 +114,14 @@ export function Todolist(props: PropsType) {
         <div>
             <ButtonGroup variant="contained" size={"small"} fullWidth>
                 <Button color={props.filter === 'all' ? "primary" : "default"}
-                    // className={props.filter === 'all' ? "active-filter" : ""}
                         onClick={onAllClickHandler}>All
                 </Button>
                 <Button
                     color={props.filter === 'active' ? "primary" : "default"}
-                    // className={props.filter === 'active' ? "active-filter" : ""}
                     onClick={onActiveClickHandler}>Active
                 </Button>
                 <Button
                     color={props.filter === 'completed' ? "primary" : "default"}
-                    // className={props.filter === 'completed' ? "active-filter" : ""}
                     onClick={onCompletedClickHandler}>Completed
                 </Button>
             </ButtonGroup>
