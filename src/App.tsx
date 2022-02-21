@@ -6,6 +6,7 @@ import {AddItemForm} from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {ButtonAppBar} from "./components/ButtonAppBar";
+import {AddTodolistAC, ChangeFilterTodolistAC, RemoveTodolistAC, todolistReducer} from "./reducers/todolists-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -48,12 +49,6 @@ function App() {
 
     }
 
-    const editTitleTodolist = (todolistID: string, title: string) => {
-        const newTodolistsList = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
-        setTodolists(newTodolistsList)
-
-    }
-
     function removeTask(todoListID: string, id: string) {
         setTasks({...tasks, [todoListID]: tasks[todoListID].filter(f => f.id !== id)});
     }
@@ -67,31 +62,54 @@ function App() {
         setTasks({...tasks, [todoListID]: tasks[todoListID].map(m => m.id === taskId ? {...m, isDone} : m)})
     }
 
-    function changeFilter(todoListID: string, value: FilterValuesType) {
-        setTodolists(todolists.map(m => m.id === todoListID ? {...m, filter: value} : m))
-    }
 
-    const removeTodo = (todoListID: string) => {
+    //Change Todolists:
 
-        let newTodoLists = [...todolists].filter(f => f.id !== todoListID)
+    const editTitleTodolist = (todolistID: string, title: string) => {
+        const newTodolistsList = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
+        setTodolists(newTodolistsList)
 
-        setTodolists(newTodoLists)
-        console.log(todoListID)
     }
 
     const addTodolist = (title: string) => {
         const todolistID = v1();
-        setTodolists([{id: todolistID, title, filter: 'all'}, ...todolists])
+        const newTodolists = todolistReducer(todolists, AddTodolistAC(todolistID,title))
+        setTodolists(newTodolists)
         setTasks({...tasks, [todolistID]: []})
     }
 
-    return (
 
+
+    // function changeFilter(todoListID: string, value: FilterValuesType) {
+    //         setTodolists(todolists.map(m => m.id === todoListID ? {...m, filter: value} : m))
+    // }
+
+    // const removeTodo = (todoListID: string) => {
+    //
+    //     let newTodoLists = [...todolists].filter(f => f.id !== todoListID)
+    //
+    //     setTodolists(newTodoLists)
+    //     console.log(todoListID)
+    // }
+
+    const removeTodo = (todoListID: string) => {
+
+        const newTodoLists = todolistReducer(todolists, RemoveTodolistAC(todoListID))
+        setTodolists(newTodoLists)
+
+    }
+    function changeFilter(todoListID: string, value: FilterValuesType) {
+        let newTodolist = todolistReducer(todolists, ChangeFilterTodolistAC(todoListID, value))
+        setTodolists(newTodolist)
+    }
+
+
+    return (
 
         <div className="App">
             <ButtonAppBar/>
             <Container fixed={true}>
-                <Grid container justifyContent="center" style={{padding: "15px"}} >
+                <Grid container justifyContent="center" style={{padding: "15px"}}>
                     <AddItemForm callback={addTodolist}/>
                 </Grid>
                 <Grid container spacing={5} justifyContent="center">
@@ -109,7 +127,7 @@ function App() {
 
                         return (
 
-                            <Grid item  key={t.id}>
+                            <Grid item key={t.id}>
                                 <Paper elevation={6} style={{
                                     // display: "inline-block",
                                     padding: "12px",
