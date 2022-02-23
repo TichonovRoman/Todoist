@@ -6,7 +6,13 @@ import {AddItemForm} from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {ButtonAppBar} from "./components/ButtonAppBar";
-import {AddTodolistAC, ChangeFilterTodolistAC, RemoveTodolistAC, todolistReducer} from "./reducers/todolists-reducer";
+import {
+    AddTodolistAC,
+    ChangeFilterTodolistAC,
+    ChangeTodolistTitleAC,
+    RemoveTodolistAC,
+    todolistReducer
+} from "./reducers/todolists-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -65,32 +71,19 @@ function App() {
 
     //Change Todolists:
 
-    const editTitleTodolist = (todolistID: string, title: string) => {
-        const newTodolistsList = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
-        setTodolists(newTodolistsList)
-
-    }
 
     const addTodolist = (title: string) => {
         const todolistID = v1();
-        const newTodolists = todolistReducer(todolists, AddTodolistAC(todolistID,title))
+        const newTodolists = todolistReducer(todolists, AddTodolistAC(todolistID, title))
         setTodolists(newTodolists)
         setTasks({...tasks, [todolistID]: []})
     }
 
 
+    const editTitleTodolist = (todolistID: string, title: string) => {
+        setTodolists(todolistReducer(todolists, ChangeTodolistTitleAC(todolistID, title)))
 
-    // function changeFilter(todoListID: string, value: FilterValuesType) {
-    //         setTodolists(todolists.map(m => m.id === todoListID ? {...m, filter: value} : m))
-    // }
-
-    // const removeTodo = (todoListID: string) => {
-    //
-    //     let newTodoLists = [...todolists].filter(f => f.id !== todoListID)
-    //
-    //     setTodolists(newTodoLists)
-    //     console.log(todoListID)
-    // }
+    }
 
     const removeTodo = (todoListID: string) => {
 
@@ -98,6 +91,7 @@ function App() {
         setTodolists(newTodoLists)
 
     }
+
     function changeFilter(todoListID: string, value: FilterValuesType) {
         let newTodolist = todolistReducer(todolists, ChangeFilterTodolistAC(todoListID, value))
         setTodolists(newTodolist)

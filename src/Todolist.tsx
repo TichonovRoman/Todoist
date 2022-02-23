@@ -50,6 +50,12 @@ export function Todolist(props: PropsType) {
         props.updateTodolistTitle(props.todoListID, title)
     }
 
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>, tID: string) => {
+        props.changeTaskStatus(props.todoListID, tID, e.currentTarget.checked);
+    }
+
+
+
     return <div style={{
         display: "flex",
         flexDirection: "column",
@@ -75,9 +81,6 @@ export function Todolist(props: PropsType) {
         <List>
             {
                 props.tasks.map(t => {
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(props.todoListID, t.id, e.currentTarget.checked);
-                    }
 
                     return <ListItem
                         disableGutters
@@ -93,7 +96,7 @@ export function Todolist(props: PropsType) {
                             <Checkbox
                                 color="primary"
                                 size="small"
-                                onChange={onChangeHandler}
+                                onChange={(e)=>onChangeHandler(e, t.id)}
                                 checked={t.isDone}
                                 style={{marginRight: "15px"}}
                             />
