@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {useState} from "react";
-import {TodolistsType} from "../App";
+import {TodolistsType} from "../AppWithRedux";
 import {
     AddTodolistAC,
     ChangeFilterTodolistAC,

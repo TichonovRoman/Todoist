@@ -38,7 +38,6 @@ export type TasksStateType = {
 function AppWithRedux() {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistsType>>(state => state.todolist)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.task)
 
     const dispatch = useDispatch()
 
@@ -67,7 +66,7 @@ function AppWithRedux() {
     const addTodolist = (title: string) => {
         const action = AddTodolistAC(title)
         dispatch(action)
-        }
+    }
 
     // const editTitleTodolist = (todolistID: string, title: string) => {
     //     dispatch(ChangeTodolistTitleAC(todolistID, title))
@@ -99,16 +98,6 @@ function AppWithRedux() {
                 <Grid container spacing={5} justifyContent="center">
                     {todolists.map((t) => {
 
-                        let tasksForTodolist = tasks[t.id];
-
-                        if (t.filter === "active") {
-                            tasksForTodolist = tasks[t.id].filter(t => t.isDone === false);
-                        }
-                        if (t.filter === "completed") {
-                            tasksForTodolist = tasks[t.id].filter(t => t.isDone === true);
-                        }
-
-
                         return (
 
                             <Grid item key={t.id}>
@@ -125,13 +114,13 @@ function AppWithRedux() {
                                 }}>
                                     <Todolist
                                         todoListID={t.id}
-                                        title={t.title}
-                                        tasks={tasksForTodolist}
+                                        // title={t.title}
+                                        // tasks={tasksForTodolist}
                                         // removeTask={removeTask}
                                         // changeFilter={changeFilter}
                                         // addTask={addTask}
                                         // changeTaskStatus={changeStatus}
-                                        filter={t.filter}
+                                        // filter={t.filter}
                                         // removeTodo={removeTodo}
                                         // updateTask={editTitleTask}
                                         // updatesTodolistTitle={editTitleTodolist}

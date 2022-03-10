@@ -19,13 +19,13 @@ type TaskType = {
 }
 
 type PropsType = {
-    title: string
-    tasks: Array<TaskType>
+    // title: string
+    // tasks: Array<TaskType>
     // removeTask: (todoListID: string, taskId: string) => void
     // changeFilter: (todoListID: string, value: FilterValuesType) => void
     // addTask: (todoListID: string, title: string) => void
     // changeTaskStatus: (todoListID: string, taskId: string, isDone: boolean) => void
-    filter: FilterValuesType
+    // filter: FilterValuesType
     todoListID: string
     // removeTodo: (todoListID: string) => void
     // updateTask: (todolistID: string, taskID: string, title: string) => void
@@ -35,7 +35,25 @@ type PropsType = {
 export function Todolist(props: PropsType) {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistsType>>(state => state.todolist)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.task)
+    const todolist =  todolists.filter(m => props.todoListID === m.id)
+
+
+
+
+
+    const todolistTasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.task[props.todoListID])
+
+    let tasksForTodolist = todolistTasks;
+
+    if (todolist) {
+        if (todolist[0].filter === "active") {
+            tasksForTodolist = todolistTasks.filter(t => t.isDone === false);
+        } else
+        if (todolist[0].filter === "completed") {
+            tasksForTodolist = todolistTasks.filter(t => t.isDone === true);
+        }
+    }
+
 
 
     const dispatch = useDispatch()
@@ -56,8 +74,8 @@ export function Todolist(props: PropsType) {
 
     let onClickHandlerForDeleteTodo = () => {
         const newTodoLists = RemoveTodolistAC(props.todoListID)
-        dispatch(newTodoLists)
-        dispatch(RemoveTodolistAC(props.todoListID))
+        dispatch(newTodoLists) // экшн идет сразу в два редюсера, т.к. запускаются все редюсеры
+        // dispatch(RemoveTodolistAC(props.todoListID))
     }
 
     const updateTodolistTitleHandler = (title: string) => {
@@ -114,7 +132,7 @@ export function Todolist(props: PropsType) {
             align={"center"}
             style={{fontWeight: "bold"}}>
 
-            <EditableSpan title={props.title} callback={updateTodolistTitleHandler}/>
+            <EditableSpan title={todolist[0].title} callback={updateTodolistTitleHandler}/>
             <IconButton>
                 <DeleteForeverOutlinedIcon fontSize={"medium"} onClick={onClickHandlerForDeleteTodo}/>
             </IconButton>
@@ -125,7 +143,7 @@ export function Todolist(props: PropsType) {
 
         <List>
             {
-                props.tasks.map(t => {
+                tasksForTodolist.map(t => {
 
                     return <ListItem
                         disableGutters
@@ -161,15 +179,15 @@ export function Todolist(props: PropsType) {
         </List>
         <div>
             <ButtonGroup variant="contained" size={"small"} fullWidth>
-                <Button color={props.filter === 'all' ? "primary" : "default"}
+                <Button color={todolist[0].filter === 'all' ? "primary" : "default"}
                         onClick={onAllClickHandler}>All
                 </Button>
                 <Button
-                    color={props.filter === 'active' ? "primary" : "default"}
+                    color={todolist[0].filter === 'active' ? "primary" : "default"}
                     onClick={onActiveClickHandler}>Active
                 </Button>
                 <Button
-                    color={props.filter === 'completed' ? "primary" : "default"}
+                    color={todolist[0].filter === 'completed' ? "primary" : "default"}
                     onClick={onCompletedClickHandler}>Completed
                 </Button>
             </ButtonGroup>
