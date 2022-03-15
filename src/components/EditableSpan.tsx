@@ -6,7 +6,8 @@ type EditableSpanPropsType = {
   callback: (title: string) => void
 }
 
-export const EditableSpan = (props: EditableSpanPropsType) => {
+export const EditableSpan = React.memo ((props: EditableSpanPropsType) => {
+  console.log("EditableSpan")
   const [title, setTitle] = useState(props.title)
   const [edit, setEdit] = useState<boolean>(false)
 
@@ -29,4 +30,4 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
       </>
 
   )
-}
+})
