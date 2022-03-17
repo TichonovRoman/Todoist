@@ -7,11 +7,12 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm = React.memo (({callback, ...props}: AddItemFormPropsType) => {
-    console.log("Add")
+    console.log("AddItemForm")
     let [title, setTitle] = useState("")
-    let [error, setError] = useState<string | null>(null)
+    let [error, setError] = useState<boolean>(false)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setError(false);
         setTitle(e.currentTarget.value)
     }
 
@@ -20,12 +21,11 @@ export const AddItemForm = React.memo (({callback, ...props}: AddItemFormPropsTy
             callback(title.trim());
             setTitle("");
         } else {
-            setError("Title is required");
+            setError(true);
         }
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (error) setError(null);
-        if (e.charCode === 13) {
+             if (e.charCode === 13) {
             addTask();
         }
     }
@@ -40,13 +40,13 @@ export const AddItemForm = React.memo (({callback, ...props}: AddItemFormPropsTy
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}
                 className={error ? "error" : ""}
-                error={!!error}
+                error={error}
             />
             <IconButton>
                 <AddBox color={"primary"} onClick={addTask}/>
             </IconButton>
 
-            {error && <div className="error-message">{error}</div>}
+            {error && <div className="error-message">{"Title is required"}</div>}
         </div>
     );
 });

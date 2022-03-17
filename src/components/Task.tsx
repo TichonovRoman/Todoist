@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -13,10 +13,25 @@ type TaskPropsType = {
 }
 
 export const Task = React.memo ((props: TaskPropsType) => {
+
+    console.log("Task")
+
+    const onChangeHandlerHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        props.onChangeHandler(e, props.id)
+    }, [props.onChangeHandler, props.id])
+    const callbackHandlerForUpdateTaskHandler = useCallback((title: string) =>{
+        props.callbackHandlerForUpdateTask(title, props.id)
+    }, [props.callbackHandlerForUpdateTask, props.id])
+    const onClickHandlerTaskRemoveHandler = useCallback(() => {
+        props.onClickHandlerTaskRemove(props.id)
+    }, [props.onClickHandlerTaskRemove, props.id ])
+
+
+
+
     return <ListItem
         disableGutters
         divider
-        key={props.id}
         className={props.isDone ? "is-done" : ""}
         style={{
             display: "flex",
@@ -27,19 +42,19 @@ export const Task = React.memo ((props: TaskPropsType) => {
             <Checkbox
                 color="primary"
                 size="small"
-                onChange={(e)=>props.onChangeHandler(e, props.id)}
+                onChange={onChangeHandlerHandler}
                 checked={props.isDone}
                 style={{marginRight: "15px"}}
             />
             <EditableSpan title={props.title}
-                          callback={(title) => props.callbackHandlerForUpdateTask(title, props.id)}/>
+                          callback={callbackHandlerForUpdateTaskHandler}/>
 
         </div>
 
         <IconButton>
 
             <HighlightOffIcon fontSize={"small"}
-                              onClick={() => props.onClickHandlerTaskRemove(props.id)}>x</HighlightOffIcon>
+                              onClick={onClickHandlerTaskRemoveHandler}>x</HighlightOffIcon>
         </IconButton>
     </ListItem>
 })

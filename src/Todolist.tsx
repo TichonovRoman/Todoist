@@ -11,6 +11,7 @@ import {TasksStateType, TodolistsType} from "./AppWithRedux";
 import {ChangeFilterTodolistAC, ChangeTodolistTitleAC, RemoveTodolistAC} from "./reducers/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
 import {Task} from "./components/Task";
+import {TaskRedux} from "./components/TaskRedux";
 
 
 type TaskType = {
@@ -65,9 +66,9 @@ export const Todolist = React.memo ((props: PropsType) => {
     const onActiveClickHandler = useCallback(() => dispatch(ChangeFilterTodolistAC(props.todoListID, "active")), [props.todoListID])
     const onCompletedClickHandler = useCallback(() => dispatch(ChangeFilterTodolistAC(props.todoListID, "completed")), [props.todoListID])
 
-    let onClickHandlerForDeleteTodo = () => {
+    let onClickHandlerForDeleteTodo = useCallback(() => {
         props.removeTodo(props.todoListID)
-    }
+    },[props.removeTodo, props.todoListID])
 
     const updateTodolistTitleHandler = useCallback((title: string) => {
             props.updateTodolistTitle(props.todoListID, title)
@@ -145,16 +146,21 @@ export const Todolist = React.memo ((props: PropsType) => {
 
         <List>
             {
-                tasksForTodolist.map(t => <Task id={t.id}
-                                                key={t.id}
-                                                title={t.title}
-                                                isDone={t.isDone}
-                                                callbackHandlerForUpdateTask={callbackHandlerForUpdateTask}
-                                                onChangeHandler={onChangeHandler}
-                                                onClickHandlerTaskRemove={onClickHandlerTaskRemove}
+                tasksForTodolist.map(t => <TaskRedux taskId={t.id} todoListID={props.todoListID}/>
 
 
-                />)}
+                //     <Task id={t.id}
+                //                                 key={t.id}
+                //                                 title={t.title}
+                //                                 isDone={t.isDone}
+                //                                 callbackHandlerForUpdateTask={callbackHandlerForUpdateTask}
+                //                                 onChangeHandler={onChangeHandler}
+                //                                 onClickHandlerTaskRemove={onClickHandlerTaskRemove}
+                //
+                //
+                // />
+
+                )}
 
 
 
