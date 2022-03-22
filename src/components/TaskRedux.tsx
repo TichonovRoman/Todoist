@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "./EditableSpan/EditableSpan";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/state";

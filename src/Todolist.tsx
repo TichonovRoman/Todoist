@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {FilterValuesType} from './AppWithRedux';
-import {AddItemForm} from "./components/AddItemForm";
-import {EditableSpan} from "./components/EditableSpan";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {EditableSpan} from "./components/EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from "@material-ui/core";
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -10,7 +10,7 @@ import {AppRootStateType} from "./state/state";
 import {TasksStateType, TodolistsType} from "./AppWithRedux";
 import {ChangeFilterTodolistAC, ChangeTodolistTitleAC, RemoveTodolistAC} from "./reducers/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
-import {Task} from "./components/Task";
+import {Task} from "./components/Task/Task";
 import {TaskRedux} from "./components/TaskRedux";
 
 
