@@ -13,16 +13,34 @@ let instance = axios.create({
 
 export const todolistApi = {
     getTodos() {
-        let promise = instance.get('todo-lists')
+        let promise = instance.get<TodoType[]>('todo-lists')
         return promise
     },
     createTodo(title: string) {
-        return instance.post('todo-lists', {title})
+        return instance.post<any,
+            BaseResponseType<{ item: TodoType }>, // типизируем то, что приходит
+            { title: string }> // типизируем то, что передаем в payload
+            ('todo-lists', {title})
     },
     deleteTodo(todolistId: string) {
-        return instance.delete(`todo-lists/${todolistId}`)
+        return instance.delete<BaseResponseType>(`todo-lists/${todolistId}`)
     },
     updateTodoTitle(todolistId: string, title: string) {
-      return  instance.put(`todo-lists/${todolistId}`, {title})
+        return instance.put<BaseResponseType>(`todo-lists/${todolistId}`, {title})
     }
+}
+
+
+type TodoType = {
+    id: string,
+    title: string,
+    addedDate: string,
+    order: number
+}
+
+type BaseResponseType<T = {}> = { // по умолчанию если ничего не педеавать, то по умолачнию вместо T будет проставлятся {}. в <T={}> можно вставлять много агрументов
+    resultCode: number,
+    messages: string[],
+    fieldErrors: string[],
+    data: T
 }
