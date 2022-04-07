@@ -1,5 +1,5 @@
-import { TasksStateType } from '../App';
-import { v1 } from 'uuid';
+import {TasksStateType} from '../App';
+import {v1} from 'uuid';
 import {AddTodolistActionType, GetTodosActionType, RemoveTodolistActionType} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../api/todolists-api'
 import {Dispatch} from "redux";
@@ -108,7 +108,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'ADD-TODOLIST': {
             return {
                 ...state,
-                [action.todolistId]: []
+                [action.todolist.id]: []
             }
         }
         case 'REMOVE-TODOLIST': {
@@ -134,7 +134,7 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
 }
 
-export const setTasksAC = (todolistID: string, tasks: Array<TaskType>)=> {
+export const setTasksAC = (todolistID: string, tasks: Array<TaskType>) => {
     return {type: "SET-TASKS", todolistID, tasks} as const
 }
 
@@ -154,12 +154,13 @@ export const deleteTasksTC = (todolistId: string, taskId: string) => {
         todolistsAPI.deleteTask(todolistId, taskId)
             .then((res) => {
                 if (res.data.resultCode === 0)
-                dispatch(removeTaskAC(todolistId, taskId))
+                    dispatch(removeTaskAC(todolistId, taskId))
 
             })
             .catch((error) => {
                 return
-                alert("Что-то пошло не так")})
+                alert("Что-то пошло не так")
+            })
     }
 }
 
@@ -168,18 +169,18 @@ export const addTasksTC = (todolistId: string, title: string) => {
         todolistsAPI.createTask(todolistId, title)
             .then((res) => {
                 if (res.data.resultCode === 0)
-                dispatch(addTaskAC(res.data.data.item))
+                    dispatch(addTaskAC(res.data.data.item))
 
             })
             .catch((error) => {
                 return
-                alert("Что-то пошло не так")})
+                alert("Что-то пошло не так")
+            })
     }
 }
 
 export const updateTasksStatusTC = (todolistId: string, taskId: string, status: TaskStatuses) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
-
         let model: any = {}
         const task: UpdateTaskModelType | undefined = getState().tasks[todolistId].find(t => t.id === taskId)
         if (task) {
@@ -190,15 +191,35 @@ export const updateTasksStatusTC = (todolistId: string, taskId: string, status: 
                 priority: task.priority,
                 startDate: task.startDate,
                 deadline: task.deadline
-
             }
-
-
         }
 
         todolistsAPI.updateTask(todolistId, taskId, model)
             .then((res) => {
-                dispatch(changeTaskStatusAC(taskId, status, todolistId)) ;
+                dispatch(changeTaskStatusAC(taskId, status, todolistId));
+            })
+    }
+}
+
+export const updateTaskTitleTC = (todolistId: string, taskId: string, title: string) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        let model: any = {}
+        const task: UpdateTaskModelType | undefined = getState().tasks[todolistId].find(t => t.id === taskId)
+        if (task) {
+            model = {
+                title: title,
+                description: task.description,
+                status: task.status,
+                priority: task.priority,
+                startDate: task.startDate,
+                deadline: task.deadline
+            }
+        }
+
+        todolistsAPI.updateTask(todolistId, taskId, model)
+            .then((res) => {
+
+                dispatch(changeTaskTitleAC(taskId, title, todolistId));
             })
     }
 }

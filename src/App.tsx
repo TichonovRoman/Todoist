@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css';
-import { Todolist } from './Todolist';
-import { AddItemForm } from './AddItemForm';
+import {Todolist} from './Todolist';
+import {AddItemForm} from './AddItemForm';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -10,14 +10,14 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { Menu } from '@mui/icons-material';
+import {Menu} from '@mui/icons-material';
 import {
-    addTodolistAC,
+    addTodolistAC, addTodoTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
+    changeTodolistTitleAC, deleteTodoTC,
     FilterValuesType, getTodoThunkCreator,
     removeTodolistAC,
-    TodolistDomainType
+    TodolistDomainType, updateTodolistTitleTC
 } from './state/todolists-reducer'
 import {
     addTaskAC,
@@ -25,11 +25,11 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     deleteTasksTC,
-    removeTaskAC, updateTasksStatusTC
+    removeTaskAC, updateTasksStatusTC, updateTaskTitleTC
 } from './state/tasks-reducer';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from './state/store';
-import { TaskStatuses, TaskType } from './api/todolists-api'
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType} from './state/store';
+import {TaskStatuses, TaskType} from './api/todolists-api'
 
 
 export type TasksStateType = {
@@ -41,27 +41,26 @@ function App() {
 
     useEffect(() => {
         dispatch(getTodoThunkCreator)
-    },[])
+    }, [])
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch();
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
-       dispatch(deleteTasksTC(todolistId, id));
-    }, [] )
+        dispatch(deleteTasksTC(todolistId, id));
+    }, [])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
-       dispatch(addTasksTC(todolistId, title));
+        dispatch(addTasksTC(todolistId, title));
     }, []);
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-      dispatch(updateTasksStatusTC(todolistId, id, status));
+        dispatch(updateTasksStatusTC(todolistId, id, status));
     }, []);
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id, newTitle, todolistId);
-        dispatch(action);
+        dispatch(updateTaskTitleTC(todolistId, id, newTitle));
     }, []);
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
@@ -70,18 +69,16 @@ function App() {
     }, []);
 
     const removeTodolist = useCallback(function (id: string) {
-        const action = removeTodolistAC(id);
-        dispatch(action);
+        dispatch(deleteTodoTC(id));
     }, []);
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const action = changeTodolistTitleAC(id, title);
-        dispatch(action);
+
+        dispatch(updateTodolistTitleTC(id, title));
     }, []);
 
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
+        dispatch(addTodoTC(title));
     }, [dispatch]);
 
     return (
@@ -107,7 +104,7 @@ function App() {
                             let allTodolistTasks = tasks[tl.id];
 
                             return <Grid item key={tl.id}>
-                                <Paper style={{padding: '10px' } } elevation={6}>
+                                <Paper style={{padding: '10px'}} elevation={6}>
                                     <Todolist
                                         id={tl.id}
                                         title={tl.title}
