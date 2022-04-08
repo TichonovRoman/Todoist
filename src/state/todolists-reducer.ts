@@ -22,7 +22,7 @@ export type ChangeTodolistFilterActionType = {
     filter: FilterValuesType
 }
 
-type ActionsType = RemoveTodolistActionType | AddTodolistActionType
+type TodolistActionsType = RemoveTodolistActionType | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
     | GetTodosActionType
@@ -39,7 +39,7 @@ export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
 }
 
-export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: ActionsType): Array<TodolistDomainType> => {
+export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: TodolistActionsType): Array<TodolistDomainType> => {
     switch (action.type) {
 
         case "GET-TODOS":
@@ -101,7 +101,7 @@ export const getTodoAC = (todos: Array<TodolistType>) => {
 }
 
 
-export const getTodoThunkCreator = (dispatch: any, getState: any): void => {
+export const getTodoThunkCreator = (dispatch: Dispatch<TodolistActionsType>, getState: any): void => {
     todolistsAPI.getTodolists()
         .then((response) => {
             dispatch(getTodoAC(response.data))
@@ -111,7 +111,7 @@ export const getTodoThunkCreator = (dispatch: any, getState: any): void => {
 
 
 export const deleteTodoTC = (todolistId: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TodolistActionsType>) => {
         todolistsAPI.deleteTodolist(todolistId)
             .then((res) => {
                 if (res.data.resultCode === 0)
@@ -119,14 +119,35 @@ export const deleteTodoTC = (todolistId: string) => {
 
             })
             .catch((error) => {
-                return
-                alert("Что-то пошло не так")
+                  alert("Что-то пошло не так")
             })
     }
 }
 
 export const addTodoTC = (title: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TodolistActionsType>) => { //такая типизация Dispatch<TodolistActionsType>
+        //вполне пойдет если внутри санки не нужно диспатчить другую санку (например, когда при добавлении
+        // тудулиста сервер ничего не возвращает и придется загружать актальный спсиок тудулистов
+        //  - т.е. потом диспатчить санку getTodoThunkCreator вместо dispatch(addTodolistAC(res.data.data.item))
+        //  Тогда нужно использовать такую типизацию:
+        // ThunkAction
+// 1 параметр - описываем, что возвращает thunk
+// 2 параметр - state всего приложения
+// 3 параметр - экстра аргументы
+// 4 параметр - все action всего App
+
+        // type ThunkType = ThunkAction<void, AppStateType, unknown, TodoActionType>
+        //
+        // const getTodolists = ():ThunkType  => {
+        //     return (dispatch, getState: ()=> AppStateType) => {
+        //         api.getTodolists()
+        //             .then(res => {
+        //                 dispatch(getTodolistsSuccess(res.data));
+        //             })
+        //     };
+        // };
+
+        // )
         todolistsAPI.createTodolist(title)
             .then((res) => {
                 if (res.data.resultCode === 0)
@@ -139,7 +160,7 @@ export const addTodoTC = (title: string) => {
     }
 }
 
-export const updateTodolistTitleTC = (todolisId: string, title: string) => (dispatch: Dispatch) => [
+export const updateTodolistTitleTC = (todolisId: string, title: string) => (dispatch: Dispatch<TodolistActionsType>) => [
     todolistsAPI.updateTodolist(todolisId, title)
         .then((res) => {
             if (res.data.resultCode === 0)

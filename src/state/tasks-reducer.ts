@@ -30,7 +30,7 @@ export type ChangeTaskTitleActionType = {
     title: string
 }
 
-type ActionsType = RemoveTaskActionType | AddTaskActionType
+type TasksActionsType = RemoveTaskActionType | AddTaskActionType
     | ChangeTaskStatusActionType
     | ChangeTaskTitleActionType
     | AddTodolistActionType
@@ -58,7 +58,7 @@ const initialState: TasksStateType = {
 
 }
 
-export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
     switch (action.type) {
         case "GET-TODOS": {
             let stateCopy = {...state}
@@ -141,7 +141,7 @@ export const setTasksAC = (todolistID: string, tasks: Array<TaskType>) => {
 type SetTasksActionType = ReturnType<typeof setTasksAC>
 
 export const getTasksTC = (todoId: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TasksActionsType>) => {
         todolistsAPI.getTasks(todoId)
             .then((res) => {
                 dispatch(setTasksAC(todoId, res.data.items))
@@ -150,7 +150,7 @@ export const getTasksTC = (todoId: string) => {
     }
 }
 export const deleteTasksTC = (todolistId: string, taskId: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TasksActionsType>) => {
         todolistsAPI.deleteTask(todolistId, taskId)
             .then((res) => {
                 if (res.data.resultCode === 0)
@@ -158,14 +158,13 @@ export const deleteTasksTC = (todolistId: string, taskId: string) => {
 
             })
             .catch((error) => {
-                return
-                alert("Что-то пошло не так")
+                  alert("Что-то пошло не так")
             })
     }
 }
 
 export const addTasksTC = (todolistId: string, title: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TasksActionsType>) => {
         todolistsAPI.createTask(todolistId, title)
             .then((res) => {
                 if (res.data.resultCode === 0)
@@ -173,14 +172,13 @@ export const addTasksTC = (todolistId: string, title: string) => {
 
             })
             .catch((error) => {
-                return
-                alert("Что-то пошло не так")
+                            alert("Что-то пошло не так")
             })
     }
 }
 
 export const updateTasksStatusTC = (todolistId: string, taskId: string, status: TaskStatuses) => {
-    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
         let model: any = {}
         const task: UpdateTaskModelType | undefined = getState().tasks[todolistId].find(t => t.id === taskId)
         if (task) {
@@ -202,7 +200,7 @@ export const updateTasksStatusTC = (todolistId: string, taskId: string, status: 
 }
 
 export const updateTaskTitleTC = (todolistId: string, taskId: string, title: string) => {
-    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
         let model: any = {}
         const task: UpdateTaskModelType | undefined = getState().tasks[todolistId].find(t => t.id === taskId)
         if (task) {
