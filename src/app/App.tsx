@@ -16,17 +16,21 @@ import {LinearProgress} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
 
 function App() {
     const statusLoading = useSelector<AppRootStateType, RequestStatusType>((state) => {
         return state.app.status
     })
+    const error = useSelector<AppRootStateType, string | null>((state) => {
+        return state.app.error
+    })
 
     return (
 
         <div className="App">
-            <AppBar position="fixed">
+            <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
@@ -38,9 +42,10 @@ function App() {
                 </Toolbar>
             </AppBar>
             {statusLoading === "loading" && <LinearProgress color="secondary" />}
-            <Container fixed style = {{paddingTop: "60px"}}>
+            <Container fixed>
                 <TodolistsList/>
             </Container>
+            {error !== null &&  <ErrorSnackbar/>}
         </div>
     )
 }
