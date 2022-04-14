@@ -23,4 +23,4 @@ export const setAppErrorAC = (error: NullableNull<string>) =>({type: 'APP/SET-ER
 
 export type SetAppErrorTypes = ReturnType<typeof setAppErrorAC>
 export type SetAppActionsTypes = ReturnType<typeof setAppStatusAC>
-type AppActionsType = SetAppActionsTypes | SetAppErrorTypes
+export type AppActionsType = SetAppActionsTypes | SetAppErrorTypes

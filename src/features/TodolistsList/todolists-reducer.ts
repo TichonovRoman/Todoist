@@ -1,6 +1,13 @@
 import {todolistsAPI, TodolistType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
-import {RequestStatusType, SetAppActionsTypes, setAppErrorAC, SetAppErrorTypes, setAppStatusAC} from "../../app/app-reducer";
+import {
+    RequestStatusType,
+    SetAppActionsTypes,
+    setAppErrorAC,
+    SetAppErrorTypes,
+    setAppStatusAC
+} from "../../app/app-reducer";
+import {AxiosError} from "axios";
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -65,13 +72,17 @@ export const removeTodolistTC = (todolistId: string) => {
         todolistsAPI.deleteTodolist(todolistId)
             .then((res) => {
                 if (res.data.resultCode === 0) {
-                dispatch(removeTodolistAC(todolistId))
-                dispatch(setAppStatusAC("succeeded"))
-                dispatch(changeTodolistEntityStatusAC(todolistId, "succeeded"))
+                    dispatch(removeTodolistAC(todolistId))
+                    dispatch(changeTodolistEntityStatusAC(todolistId, "succeeded"))
                 } else {
-                    dispatch(setAppStatusAC("failed"))
                     dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error"))
                 }
+            })
+            .catch((err: AxiosError) => {
+                dispatch(setAppErrorAC(err.message))
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC("idle"))
             })
     }
 }
@@ -82,13 +93,16 @@ export const addTodolistTC = (title: string) => {
             .then((res) => {
                 if (res.data.resultCode === 0) {
                     dispatch(addTodolistAC(res.data.data.item))
-                    dispatch(setAppStatusAC("succeeded"))
                 } else {
-                    dispatch(setAppStatusAC("failed"))
                     dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error"))
                 }
             })
-
+            .catch((err: AxiosError) => {
+                dispatch(setAppErrorAC(err.message))
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC("idle"))
+            })
     }
 }
 export const changeTodolistTitleTC = (id: string, title: string) => {
@@ -97,12 +111,16 @@ export const changeTodolistTitleTC = (id: string, title: string) => {
         todolistsAPI.updateTodolist(id, title)
             .then((res) => {
                 if (res.data.resultCode === 0) {
-                dispatch(changeTodolistTitleAC(id, title))
-                dispatch(setAppStatusAC("succeeded"))
+                    dispatch(changeTodolistTitleAC(id, title))
                 } else {
-                    dispatch(setAppStatusAC("failed"))
                     dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error"))
                 }
+            })
+            .catch((err: AxiosError) => {
+                dispatch(setAppErrorAC(err.message))
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC("idle"))
             })
     }
 }
@@ -120,7 +138,7 @@ type ActionsType =
     | SetTodolistsActionType
     | SetAppActionsTypes
     | SetAppErrorTypes
-| ChangeTodolistEntityStatusActionType
+    | ChangeTodolistEntityStatusActionType
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType,
