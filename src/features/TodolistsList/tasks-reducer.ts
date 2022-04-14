@@ -63,9 +63,14 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
     dispatch(setAppStatusAC("loading"))
     todolistsAPI.deleteTask(todolistId, taskId)
         .then(res => {
+            if (res.data.resultCode === 0) {
             const action = removeTaskAC(taskId, todolistId)
             dispatch(action)
             dispatch(setAppStatusAC("succeeded"))
+            } else {
+                dispatch(setAppStatusAC("failed"))
+                dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error"))
+            }
         })
 }
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
@@ -108,9 +113,14 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
 
         todolistsAPI.updateTask(todolistId, taskId, apiModel)
             .then(res => {
+                if (res.data.resultCode === 0) {
                 const action = updateTaskAC(taskId, domainModel, todolistId)
                 dispatch(action)
                 dispatch(setAppStatusAC("succeeded"))
+                } else {
+                    dispatch(setAppStatusAC("failed"))
+                    dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error"))
+                }
             })
     }
 
