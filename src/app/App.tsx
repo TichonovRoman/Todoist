@@ -11,14 +11,14 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import {Menu} from '@mui/icons-material';
+import {Menu, NavigateBefore} from '@mui/icons-material';
 import {LinearProgress} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {Routes, Route, Navigate} from "react-router-dom";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
 
 
@@ -50,7 +50,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<TodolistsList/>}/>
                         <Route path="login" element={<Login/>}/>
-                        <Route path="*"  element={<PageNotFound/>}/>
+                        <Route path="/404"  element={<PageNotFound/>}/>
+                        <Route path="*"  element={<Navigate to={"/404"}/>}/> //если ничего не нашел в имеющихся роутах
                     </Routes>
 
             </Container>
