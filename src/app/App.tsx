@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import { TodolistsList } from '../features/TodolistsList/TodolistsList'
+import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 
 // You can learn about the difference by reading this guide on minimizing bundle size.
 // https://mui.com/guides/minimizing-bundle-size/
@@ -11,12 +11,15 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import { Menu } from '@mui/icons-material';
+import {Menu} from '@mui/icons-material';
 import {LinearProgress} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {Login} from "../features/Login/Login";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import PageNotFound from "../components/PageNotFound/PageNotFound";
 
 
 function App() {
@@ -35,17 +38,23 @@ function App() {
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         News
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            {statusLoading === "loading" && <LinearProgress color="secondary" />}
+            {statusLoading === "loading" && <LinearProgress color="secondary"/>}
             <Container fixed>
-                <TodolistsList/>
+
+                    <Routes>
+                        <Route path="/" element={<TodolistsList/>}/>
+                        <Route path="login" element={<Login/>}/>
+                        <Route path="*"  element={<PageNotFound/>}/>
+                    </Routes>
+
             </Container>
-            {error !== null &&  <ErrorSnackbar/>}
+            {error !== null && <ErrorSnackbar/>}
         </div>
     )
 }
