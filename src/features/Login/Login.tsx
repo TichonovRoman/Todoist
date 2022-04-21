@@ -11,6 +11,7 @@ import {useDispatch} from "react-redux";
 import {fetchTodolistsTC} from "../TodolistsList/todolists-reducer";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {useFormik} from "formik";
+import {loginTC} from "./auth-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -48,8 +49,9 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
-            formik.resetForm()
+            dispatch(loginTC(values))
+            // alert(JSON.stringify(values));
+            // formik.resetForm()
         },
     })
 
