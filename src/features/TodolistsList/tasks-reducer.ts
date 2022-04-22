@@ -2,7 +2,13 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
-import {SetAppActionsTypes, setAppErrorAC, SetAppErrorTypes, setAppStatusAC} from "../../app/app-reducer";
+import {
+    SetAppActionsTypes,
+    setAppErrorAC,
+    SetAppErrorTypes,
+    SetAppIsInitializedTypes,
+    setAppStatusAC
+} from "../../app/app-reducer";
 import {AxiosError} from "axios";
 import {handleServerNetworkError} from "../../utils/error-utils";
 
@@ -63,7 +69,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
         .catch((err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message)
         })
-        .finally(()=>{
+        .finally(() => {
             dispatch(setAppStatusAC("failed"))
         })
 }
@@ -81,7 +87,7 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
         .catch((err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message)
         })
-        .finally(()=>{
+        .finally(() => {
             dispatch(setAppStatusAC("failed"))
         })
 
@@ -101,7 +107,7 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
         .catch((err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message)
         })
-        .finally(()=>{
+        .finally(() => {
             dispatch(setAppStatusAC("failed"))
         })
 }
@@ -138,7 +144,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             .catch((err: AxiosError) => {
                 handleServerNetworkError(dispatch, err.message)
             })
-            .finally(()=>{
+            .finally(() => {
                 dispatch(setAppStatusAC("failed"))
             })
     }
@@ -165,3 +171,4 @@ type ActionsType =
     | ReturnType<typeof setTasksAC>
     | SetAppActionsTypes
     | SetAppErrorTypes
+    | SetAppIsInitializedTypes
