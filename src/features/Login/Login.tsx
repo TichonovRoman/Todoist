@@ -7,11 +7,13 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchTodolistsTC} from "../TodolistsList/todolists-reducer";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {useFormik} from "formik";
 import {loginTC} from "./auth-reducer";
+import {AppRootStateType} from "../../app/store";
+import {Navigate, useNavigate} from 'react-router-dom';
 
 type FormikErrorType = {
     email?: string
@@ -22,8 +24,11 @@ type FormikErrorType = {
 export const Login = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    useEffect(() => {
+    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+       useEffect(() => {
         dispatch(setAppStatusAC("succeeded"))
     }, [])
 
@@ -50,11 +55,12 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginTC(values))
-            // alert(JSON.stringify(values));
-            // formik.resetForm()
-        },
+            },
     })
 
+   if (isLoggedIn) {
+       navigate("/")
+   }
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
