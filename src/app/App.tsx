@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 
@@ -13,13 +13,14 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import {Menu, NavigateBefore} from '@mui/icons-material';
 import {LinearProgress} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Routes, Route, Navigate} from "react-router-dom";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
+import {initializeAppTC} from "../features/Login/auth-reducer";
 
 
 function App() {
@@ -28,6 +29,11 @@ function App() {
     })
     const error = useSelector<AppRootStateType, string | null>((state) => {
         return state.app.error
+    })
+    const dispatch = useDispatch()
+
+    useEffect(()=> {
+        dispatch(initializeAppTC())
     })
 
     return (

@@ -36,6 +36,19 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
         })
         .finally(() => dispatch(setAppStatusAC('succeeded')))
 }
+
+export const initializeAppTC = () => (dispatch: Dispatch) => {
+    authAPI.me().then(res => {
+        debugger
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC(true));
+        } else {
+        }
+    })
+}
+
+
+
 // types
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> | AppActionsType
