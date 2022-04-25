@@ -29,14 +29,16 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
-    console.log('Todolist called')
 
     const dispatch = useDispatch()
 
     // useEffect(() => {
     //     const thunk = fetchTasksTC(props.id)
-    //     dispatch(thunk)
-    // }, [])
+    //     dispatch(thunk)е
+    // }, []) это можно вернуть если мы уберем диспатч тасок через forEach после запроса тудулистов
+    // (иначе запросы тасок и тудулистов выполняются в разном порядке
+    // и поэтому м.б. ситуация когда таски загрузились, а тудулисты нет
+    // а когда загрузяться тудулисты, то тасок уже небудет и появятся голые тудулисты)
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
