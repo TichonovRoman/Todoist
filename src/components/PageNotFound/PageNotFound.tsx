@@ -6,7 +6,7 @@ const PageNotFound = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatusAC({status: "succeeded"}))
     }, [])
     return (
         <h1 style={{textAlign: "center"}}>404: PAGE NOT FOUND</h1>

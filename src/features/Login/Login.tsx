@@ -26,10 +26,13 @@ export const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => {
+
+        return state.auth.isLoggedIn
+    })
 
        useEffect(() => {
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatusAC({status: "succeeded"}))
     }, [])
 
     const formik = useFormik({
@@ -59,6 +62,7 @@ export const Login = () => {
     })
 
    if (isLoggedIn) {
+
        navigate("/")
    }
 
