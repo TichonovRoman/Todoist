@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/Todoist/static/css/main.48934d97.chunk.css",
-    "main.js": "/Todoist/static/js/main.309bf20f.chunk.js",
-    "main.js.map": "/Todoist/static/js/main.309bf20f.chunk.js.map",
-    "runtime-main.js": "/Todoist/static/js/runtime-main.cb6c7ea6.js",
-    "runtime-main.js.map": "/Todoist/static/js/runtime-main.cb6c7ea6.js.map",
-    "static/js/2.af8b23df.chunk.js": "/Todoist/static/js/2.af8b23df.chunk.js",
-    "static/js/2.af8b23df.chunk.js.map": "/Todoist/static/js/2.af8b23df.chunk.js.map",
-    "static/js/3.e77ed7c9.chunk.js": "/Todoist/static/js/3.e77ed7c9.chunk.js",
-    "static/js/3.e77ed7c9.chunk.js.map": "/Todoist/static/js/3.e77ed7c9.chunk.js.map",
+    "main.js": "/Todoist/static/js/main.f91cf3f3.chunk.js",
+    "main.js.map": "/Todoist/static/js/main.f91cf3f3.chunk.js.map",
+    "runtime-main.js": "/Todoist/static/js/runtime-main.55064eb9.js",
+    "runtime-main.js.map": "/Todoist/static/js/runtime-main.55064eb9.js.map",
+    "static/js/2.071f40d0.chunk.js": "/Todoist/static/js/2.071f40d0.chunk.js",
+    "static/js/2.071f40d0.chunk.js.map": "/Todoist/static/js/2.071f40d0.chunk.js.map",
+    "static/js/3.460014d7.chunk.js": "/Todoist/static/js/3.460014d7.chunk.js",
+    "static/js/3.460014d7.chunk.js.map": "/Todoist/static/js/3.460014d7.chunk.js.map",
     "index.html": "/Todoist/index.html",
     "static/css/main.48934d97.chunk.css.map": "/Todoist/static/css/main.48934d97.chunk.css.map",
-    "static/js/2.af8b23df.chunk.js.LICENSE.txt": "/Todoist/static/js/2.af8b23df.chunk.js.LICENSE.txt"
+    "static/js/2.071f40d0.chunk.js.LICENSE.txt": "/Todoist/static/js/2.071f40d0.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.cb6c7ea6.js",
-    "static/js/2.af8b23df.chunk.js",
+    "static/js/runtime-main.55064eb9.js",
+    "static/js/2.071f40d0.chunk.js",
     "static/css/main.48934d97.chunk.css",
-    "static/js/main.309bf20f.chunk.js"
+    "static/js/main.f91cf3f3.chunk.js"
   ]
 }
