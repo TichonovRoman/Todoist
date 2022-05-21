@@ -72,6 +72,7 @@ export const TodolistsList: React.FC = () => {
         dispatch(thunk)
     }, [])
 
+
     const addTodolist = useCallback((title: string) => {
         const thunk = addTodolistTC(title)
         dispatch(thunk)

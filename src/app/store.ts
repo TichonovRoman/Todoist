@@ -14,12 +14,14 @@ const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer
 })
-// непосредственно создаём store
+
 // export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+//вместо createStore теперь берем configureStore
 
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>getDefaultMiddleware().prepend(thunkMiddleware)
+    // к дефолтному мидлвеар добавляем (prepend- в началао) thunkMiddleware
 })
 
 

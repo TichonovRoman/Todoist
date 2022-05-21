@@ -9,20 +9,27 @@ const initialState = {
     isLoggedIn: false
 }
 
+//не нужны AC и их типизация, экшеныи их типизация. Не нужна типизация initialState
+// setIsLoggedInAC он же редьюсер он же как и АС.
+// не нужно писать case, default case
 
 const slice = createSlice({
-    name: "auth",
+    name: "auth", //исходя из имени будет генерировать case самостоятельно
     initialState: initialState,
-    reducers: {
+    reducers: { //как обьект
         setIsLoggedInAC(state, action: PayloadAction<{value: boolean}> ) {
                       state.isLoggedIn = action.payload.value
+            // нужно передавать занчения через payload и затипизровать соответствующе, чтобы работало
+            // благодаря библиотеке immer.js можеи менять все с виду мутабельно, все происходит под капотом
+            // а не иммутабельно как того требует Redux [...state]
+                          // каждый case это маленький подредьюсер
         }
     }
 })
 
-export const authReducer = slice.reducer
+export const authReducer = slice.reducer //наш редьюсер
 
-const {setIsLoggedInAC} = slice.actions
+const {setIsLoggedInAC} = slice.actions //наши экшены
 
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status:'loading'}))
