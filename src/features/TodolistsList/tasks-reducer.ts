@@ -28,7 +28,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: TasksStateType = {}
 
-const slice = createSlice({
+export const slice = createSlice({
     name: "tasks",
     initialState,
     reducers: {
@@ -73,6 +73,7 @@ const slice = createSlice({
     }
 
 })
+export const asyncActions = slice.actions
 
 export const {removeTaskAC, addTaskAC, updateTaskAC, setTasksAC} = slice.actions
 
