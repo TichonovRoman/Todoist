@@ -8,12 +8,11 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTodolistsTC} from "../TodolistsList/todolists-reducer";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {useFormik} from "formik";
 import {loginTC} from "./auth-reducer";
 import {AppRootStateType} from "../../app/store";
-import {Navigate, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 type FormikErrorType = {
     email?: string
@@ -33,7 +32,7 @@ export const Login = () => {
 
        useEffect(() => {
         dispatch(setAppStatusAC({status: "succeeded"}))
-    }, [])
+    }, [dispatch])
 
     const formik = useFormik({
         initialValues: {

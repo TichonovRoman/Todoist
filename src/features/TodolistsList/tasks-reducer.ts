@@ -9,13 +9,11 @@ import {
     TaskStatuses,
     TaskType,
     todolistsAPI,
-    TodolistType,
     UpdateTaskModelType
 } from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {
-    RequestStatusType,
     SetAppActionsTypes,
     setAppErrorAC,
     SetAppErrorTypes,
