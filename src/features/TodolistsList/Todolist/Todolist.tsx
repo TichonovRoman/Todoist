@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect } from 'react'
-import { AddItemForm } from '../../../components/AddItemForm/AddItemForm'
-import { EditableSpan } from '../../../components/EditableSpan/EditableSpan'
-import { Task } from './Task/Task'
-import { TaskStatuses, TaskType } from '../../../api/todolists-api'
-import { FilterValuesType } from '../todolists-reducer'
-import { useDispatch } from 'react-redux'
-import { fetchTasksTC } from '../tasks-reducer'
+import React, {useCallback, useEffect} from 'react'
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
+import {Task} from './Task/Task'
+import {TaskStatuses, TaskType} from '../../../api/todolists-api'
+import {FilterValuesType} from '../todolists-reducer'
+import {useDispatch} from 'react-redux'
+import {fetchTasksTC} from '../tasks-reducer'
 
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
 import {RequestStatusType} from "../../../app/app-reducer";
+import SortButtonGroup from "./SortButtonGroup/SortButtonGroup";
 
 type PropsType = {
     id: string
@@ -30,9 +31,7 @@ type PropsType = {
 
 export const Todolist = React.memo(function (props: PropsType) {
 
-    const dispatch = useDispatch()
-
-    // useEffect(() => {
+     // useEffect(() => {
     //     const thunk = fetchTasksTC(props.id)
     //     dispatch(thunk)е
     // }, []) это можно вернуть если мы уберем диспатч тасок через forEach после запроса тудулистов
@@ -50,11 +49,6 @@ export const Todolist = React.memo(function (props: PropsType) {
     const changeTodolistTitle = useCallback((title: string) => {
         props.changeTodolistTitle(props.id, title)
     }, [props.id, props.changeTodolistTitle])
-
-    const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.id, props.changeFilter])
-    const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id), [props.id, props.changeFilter])
-    const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.id), [props.id, props.changeFilter])
-
 
     let tasksForTodolist = props.tasks
 
@@ -81,21 +75,10 @@ export const Todolist = React.memo(function (props: PropsType) {
                 />)
             }
         </div>
-        <div style={{paddingTop: '10px'}}>
-            <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
-                    onClick={onAllClickHandler}
-                    color={'inherit'}
-            >All
-            </Button>
-            <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
-                    onClick={onActiveClickHandler}
-                    color={'primary'}>Active
-            </Button>
-            <Button variant={props.filter === 'completed' ? 'outlined' : 'text'}
-                    onClick={onCompletedClickHandler}
-                    color={'secondary'}>Completed
-            </Button>
-        </div>
+        <SortButtonGroup filter={props.filter}
+                         id={props.id}
+                         changeFilter={props.changeFilter}
+        />
     </div>
 })
 
