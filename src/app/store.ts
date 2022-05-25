@@ -24,9 +24,10 @@ export const store = configureStore({
     // к дефолтному мидлвеар добавляем (prepend- в началао) thunkMiddleware
 })
 
+export type RootReducerType = typeof rootReducer;
 
 // определить автоматически тип всего объекта состояния
-export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppRootStateType = ReturnType<RootReducerType>
 
 
 // export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
