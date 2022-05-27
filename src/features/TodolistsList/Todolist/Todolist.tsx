@@ -27,53 +27,62 @@ type PropsType = {
 
 export const Todolist = React.memo(function (props: PropsType) {
 
-     // useEffect(() => {
-    //     const thunk = fetchTasksTC(props.id)
-    //     dispatch(thunk)е
-    // }, []) это можно вернуть если мы уберем диспатч тасок через forEach после запроса тудулистов
-    // (иначе запросы тасок и тудулистов выполняются в разном порядке
-    // и поэтому м.б. ситуация когда таски загрузились, а тудулисты нет
-    // а когда загрузяться тудулисты, то тасок уже небудет и появятся голые тудулисты)
+    const {
+        id,
+        addTask,
+        removeTodolist,
+        changeFilter,
+        changeTodolistTitle,
+        changeTaskTitle,
+        changeTaskStatus,
+        tasks,
+        filter,
+        title,
+        entityStatus,
+        removeTask
+    } = props
 
-    const addTask = useCallback((title: string) => {
-        props.addTask(title, props.id)
-    }, [props.addTask, props.id])
+    const addTaskHandler = useCallback((title: string) => {
+        addTask(title, id)
+    }, [addTask, id])
 
-    const removeTodolist = () => {
-        props.removeTodolist(props.id)
+    const removeTodolistHandler = () => {
+        removeTodolist(id)
     }
-    const changeTodolistTitle = useCallback((title: string) => {
-        props.changeTodolistTitle(props.id, title)
-    }, [props.id, props.changeTodolistTitle])
+    const changeTodolistTitleHandler = useCallback((title: string) => {
+        changeTodolistTitle(id, title)
+    }, [id, changeTodolistTitle])
 
-    let tasksForTodolist = props.tasks
+    let tasksForTodolist = tasks
 
-    if (props.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New)
+    if (filter === 'active') {
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.New)
     }
-    if (props.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
+    if (filter === 'completed') {
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.Completed)
     }
 
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist} disabled={props.entityStatus === "loading"}>
+        <h3><EditableSpan value={title} onChange={changeTodolistTitleHandler}/>
+            <IconButton onClick={removeTodolistHandler} disabled={entityStatus === "loading"}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
+        <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"}/>
         <div>
             {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
-                                                removeTask={props.removeTask}
-                                                changeTaskTitle={props.changeTaskTitle}
-                                                changeTaskStatus={props.changeTaskStatus}
+                tasksForTodolist.map(task => <Task key={task.id}
+                                                   task={task}
+                                                   todolistId={id}
+                                                   removeTask={removeTask}
+                                                   changeTaskTitle={changeTaskTitle}
+                                                   changeTaskStatus={changeTaskStatus}
                 />)
             }
         </div>
-        <SortButtonGroup filter={props.filter}
-                         id={props.id}
-                         changeFilter={props.changeFilter}
+        <SortButtonGroup filter={filter}
+                         id={id}
+                         changeFilter={changeFilter}
         />
     </div>
 })

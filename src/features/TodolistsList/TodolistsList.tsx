@@ -28,7 +28,6 @@ export const TodolistsList: React.FC = () => {
     let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
 
-
     useEffect(() => {
         if(!isLoggedIn) {
             return
@@ -89,21 +88,22 @@ export const TodolistsList: React.FC = () => {
         </Grid>
         <Grid container spacing={3}>
             {
-                todolists.map(tl => {
-                    let allTodolistTasks = tasks[tl.id]
+                todolists.map(({id, title, entityStatus, filter}) => {
+                    //достаем данные деструктуризацией элемента
+                    let allTodolistTasks = tasks[id]
 
-                    return <Grid item key={tl.id}>
+                    return <Grid item key={id}>
                         <Paper style={{padding: '10px'}} elevation={6}>
                             <Todolist
-                                id={tl.id}
-                                title={tl.title}
-                                entityStatus = {tl.entityStatus}
+                                id={id}
+                                title={title}
+                                entityStatus = {entityStatus}
                                 tasks={allTodolistTasks}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 changeTaskStatus={changeStatus}
-                                filter={tl.filter}
+                                filter={filter}
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
