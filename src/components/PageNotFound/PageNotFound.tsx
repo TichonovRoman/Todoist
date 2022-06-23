@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch} from "react-redux";
-import {setAppStatusAC} from "../../app/app-reducer";
+import {setAppStatusAC} from "app/app-reducer";
 
 const PageNotFound = () => {
     const dispatch = useDispatch()

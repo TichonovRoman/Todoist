@@ -1,4 +1,4 @@
-import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
+import {AppActionsType, setAppErrorAC, setAppStatusAC} from "app/app-reducer";
 import {Dispatch} from "redux";
 
 export const handleServerNetworkError = (dispatch: Dispatch<AppActionsType>, message: string) => {

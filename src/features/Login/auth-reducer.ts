@@ -1,8 +1,8 @@
 import {Dispatch} from 'redux'
 import {setAppErrorAC, setAppIsInitializedAC, setAppStatusAC} from
-        '../../app/app-reducer'
-import {authAPI, LoginParamsType} from "../../api/todolists-api";
-import {handleServerNetworkError} from "../../utils/error-utils";
+        'app/app-reducer'
+import {authAPI, LoginParamsType} from "api/todolists-api";
+import {handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
@@ -17,12 +17,12 @@ const slice = createSlice({
     name: "auth", //исходя из имени будет генерировать case самостоятельно
     initialState: initialState,
     reducers: { //как обьект
-        setIsLoggedInAC(state, action: PayloadAction<{value: boolean}> ) {
-                      state.isLoggedIn = action.payload.value
+        setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
+            state.isLoggedIn = action.payload.value
             // нужно передавать занчения через payload и затипизровать соответствующе, чтобы работало
             // благодаря библиотеке immer.js можеи менять все с виду мутабельно, все происходит под капотом
             // а не иммутабельно как того требует Redux [...state]
-                          // каждый case это маленький подредьюсер
+            // каждый case это маленький подредьюсер
         }
     }
 })
@@ -32,7 +32,7 @@ export const authReducer = slice.reducer //наш редьюсер
 const {setIsLoggedInAC} = slice.actions //наши экшены
 
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC({status:'loading'}))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then((res) => {
             if (res.data.resultCode === 0) {
@@ -75,7 +75,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
         .catch((error) => {
             handleServerNetworkError(dispatch, error.message)
         })
-        .finally(()=> {
+        .finally(() => {
             dispatch(setAppIsInitializedAC({isInitialized: true}))
         })
 

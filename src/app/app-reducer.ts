@@ -1,16 +1,16 @@
-import {NullableNull} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {NullableNull} from "components/ErrorSnackbar/ErrorSnackbar";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
-export type initialStateType = {
+export type initialAppStateType = {
     status: RequestStatusType
     error: NullableNull<string>,
     isInitialized: boolean,
 }
 
 
-const initialState: initialStateType = {
+const initialState: initialAppStateType = {
     status: 'loading' as RequestStatusType,
     error: null as NullableNull<string>,
     isInitialized: false,

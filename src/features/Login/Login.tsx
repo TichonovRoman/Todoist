@@ -1,4 +1,9 @@
 import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from 'react-router-dom';
+
+import {useFormik} from "formik";
+
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -7,12 +12,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useDispatch, useSelector} from "react-redux";
-import {setAppStatusAC} from "../../app/app-reducer";
-import {useFormik} from "formik";
+
+import {setAppStatusAC} from "app/app-reducer";
 import {loginTC} from "./auth-reducer";
-import {AppRootStateType} from "../../app/store";
-import {useNavigate} from 'react-router-dom';
+import {AppRootStateType} from "app/store";
+
 
 type FormikErrorType = {
     email?: string
